@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Oraculum · Morning Edition · July 3, 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=Oswald:wght@600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink:    #1A1A1A;
+      --paper:  #F5F5F3;
+      --dust:   #EAEBEC;
+      --rule:   #D0D0CD;
+      --accent: #B5162B;
+      --muted:  #6B6B68;
+      --up:     #1A6B35;
+      --down:   #B5162B;
+      --font-display: 'Oswald', sans-serif;
+      --font-body:    'Source Serif 4', serif;
+      --font-mono:    'JetBrains Mono', monospace;
+      --header-h: 56px;
+      --tabnav-h: 43px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--paper); color: var(--ink); font-family: var(--font-body); font-size: 17px; line-height: 1.65; -webkit-font-smoothing: antialiased; }
+
+    /* HEADER */
+    .site-header { position: sticky; top: 0; z-index: 100; background: var(--paper); border-bottom: 2px solid var(--ink); height: var(--header-h); display: flex; align-items: center; justify-content: space-between; padding: 0 24px; gap: 16px; }
+    .site-name { font-family: 'UnifrakturMaguntia', cursive; font-size: 30px; font-weight: 400; letter-spacing: 0.05em; color: var(--ink); flex-shrink: 0; line-height: 1; }
+    .site-meta { font-family: var(--font-mono); font-size: 10px; color: var(--muted); letter-spacing: 0.04em; text-align: center; line-height: 1.4; }
+    .lang-switcher { display: flex; gap: 2px; flex-shrink: 0; }
+    .lang-btn { font-family: var(--font-display); font-size: 11px; font-weight: 600; letter-spacing: 0.08em; padding: 5px 9px; border: 1px solid var(--rule); background: transparent; color: var(--muted); cursor: pointer; transition: all 0.12s; text-transform: uppercase; }
+    .lang-btn:hover { border-color: var(--ink); color: var(--ink); }
+    .lang-btn.active { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+
+    /* META STRIP */
+    .meta-strip { background: var(--dust); border-bottom: 1px solid var(--rule); padding: 7px 24px; display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; }
+    .meta-strip span { font-family: var(--font-mono); font-size: 10px; color: var(--muted); letter-spacing: 0.04em; white-space: nowrap; }
+    .meta-accent { color: var(--accent); font-weight: 500; }
+
+    /* TAB NAV */
+    .tab-nav { position: sticky; top: var(--header-h); z-index: 90; background: var(--paper); border-bottom: 1px solid var(--rule); display: flex; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; height: var(--tabnav-h); align-items: stretch; }
+    .tab-nav::-webkit-scrollbar { display: none; }
+    .tab-btn { font-family: var(--font-display); font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 0 20px; border: none; background: transparent; color: var(--muted); cursor: pointer; white-space: nowrap; border-bottom: 2px solid transparent; transition: all 0.12s; flex-shrink: 0; }
+    .tab-btn:hover { color: var(--ink); }
+    .tab-btn.active { color: var(--ink); border-bottom-color: var(--accent); }
+
+    /* CONTENT */
+    .content { max-width: 720px; margin: 0 auto; padding: 36px 24px 64px; }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* DATELINE */
+    .dateline { display: flex; align-items: center; gap: 14px; margin-bottom: 32px; }
+    .dateline-text { font-family: var(--font-display); font-size: 10px; font-weight: 600; letter-spacing: 0.14em; color: var(--muted); white-space: nowrap; text-transform: uppercase; }
+    .dateline::after { content: ''; flex: 1; height: 1px; background: var(--rule); }
+
+    /* FEATURED ARTICLE */
+    .featured-article { margin-bottom: 40px; padding-bottom: 40px; border-bottom: 1px solid var(--dust); }
+    .featured-article:last-of-type { border-bottom: none; padding-bottom: 0; }
+    .article-source { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.1em; color: var(--muted); text-transform: uppercase; margin-bottom: 8px; }
+    .article-headline { font-size: 22px; font-weight: 600; line-height: 1.3; margin-bottom: 14px; }
+    .article-headline a { color: var(--ink); text-decoration: none; }
+    .article-headline a:hover { color: var(--accent); }
+    .article-summary { font-size: 16px; line-height: 1.75; color: #2A2A28; margin-bottom: 14px; }
+    .article-expanded { font-size: 15px; line-height: 1.75; color: var(--muted); display: none; margin: 14px 0; padding-left: 16px; border-left: 2px solid var(--accent); }
+    .expand-btn { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.04em; color: var(--accent); background: none; border: none; cursor: pointer; padding: 0; }
+    .expand-btn:hover { opacity: 0.7; }
+
+    /* ARTICLE IMAGE */
+    .article-img { width: 100%; max-height: 340px; object-fit: cover; display: block; margin-bottom: 16px; }
+
+    /* SOURCE LINK */
+    .source-link { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.04em; color: var(--muted); text-decoration: none; border-bottom: 1px solid var(--rule); padding-bottom: 1px; margin-left: 12px; transition: color 0.12s; }
+    .source-link:hover { color: var(--accent); border-bottom-color: var(--accent); }
+
+    /* MINOR BLOCK */
+    .minor-block { background: var(--dust); padding: 20px; margin: 32px 0; }
+    .minor-block-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.1em; color: var(--muted); text-transform: uppercase; margin-bottom: 12px; }
+    .minor-item { padding: 10px 0; border-bottom: 1px solid var(--rule); font-size: 14px; line-height: 1.5; }
+    .minor-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .minor-item a { color: var(--ink); font-weight: 600; text-decoration: none; display: block; margin-bottom: 2px; }
+    .minor-item a:hover { color: var(--accent); }
+    .minor-summary { color: var(--muted); font-size: 13px; }
+
+    /* OVERVIEW */
+    .overview-block { border-top: 1px solid var(--dust); padding-top: 20px; margin-top: 8px; }
+    .overview-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.1em; color: var(--muted); text-transform: uppercase; margin-bottom: 10px; }
+    .overview-text { font-size: 15px; line-height: 1.75; color: var(--muted); font-style: italic; }
+
+    /* SUMMARY TAB */
+    .top-story-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.12em; color: var(--accent); text-transform: uppercase; margin-bottom: 10px; }
+    .top-story { font-size: 21px; font-weight: 600; line-height: 1.35; padding-left: 16px; border-left: 3px solid var(--accent); margin-bottom: 24px; }
+    .briefing-text { font-size: 17px; line-height: 1.8; margin-bottom: 12px; }
+    .watch-next { font-family: var(--font-mono); font-size: 12px; color: var(--muted); padding: 14px 16px; border: 1px solid var(--rule); margin-top: 24px; line-height: 1.5; }
+    .watch-next-label { color: var(--accent); font-weight: 500; display: block; margin-bottom: 4px; letter-spacing: 0.06em; }
+
+    /* THREADS */
+    .threads-dateline { margin-top: 40px; }
+    .thread-item { display: flex; align-items: baseline; gap: 12px; padding: 11px 0; border-bottom: 1px solid var(--dust); font-size: 14px; line-height: 1.4; }
+    .thread-badge { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.05em; padding: 2px 7px; white-space: nowrap; flex-shrink: 0; text-transform: uppercase; }
+    .badge-developing { background: #FFF3CD; color: #7A5800; }
+    .badge-new { background: #FCE4E4; color: #8B1A1A; }
+    .thread-detail { color: var(--muted); font-size: 12px; display: none; margin-top: 6px; padding-left: 4px; font-style: italic; }
+    .thread-toggle { cursor: pointer; }
+    .thread-toggle:hover .thread-summary { color: var(--accent); }
+
+    /* SECTION CARDS */
+    .section-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 40px; }
+    .section-card { padding: 16px; border: 1px solid var(--rule); cursor: pointer; transition: border-color 0.12s; background: var(--paper); }
+    .section-card:hover { border-color: var(--ink); }
+    .card-label { font-family: var(--font-display); font-size: 10px; font-weight: 600; letter-spacing: 0.1em; color: var(--muted); text-transform: uppercase; margin-bottom: 6px; }
+    .card-headline { font-size: 13px; font-weight: 600; line-height: 1.4; color: var(--ink); }
+
+    /* MARKETS */
+    .rates-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--rule); border: 1px solid var(--rule); margin-bottom: 8px; }
+    .rate-cell { background: var(--paper); padding: 18px 16px; text-align: center; }
+    .rate-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.12em; color: var(--muted); text-transform: uppercase; margin-bottom: 8px; }
+    .rate-value { font-family: var(--font-mono); font-size: 22px; font-weight: 500; color: var(--ink); display: block; }
+    .rate-change { font-family: var(--font-mono); font-size: 12px; margin-top: 5px; display: block; }
+    .up { color: var(--up); }
+    .down { color: var(--down); }
+    .rate-note { font-family: var(--font-mono); font-size: 10px; color: var(--muted); text-align: right; margin-bottom: 32px; letter-spacing: 0.04em; }
+
+    /* LANGUAGE LAYERS */
+    .l-en, .l-hu, .l-ru { display: none; }
+    body.lang-en .l-en { display: inline; }
+    body.lang-hu .l-hu { display: inline; }
+    body.lang-ru .l-ru { display: inline; }
+    /* MIX mode: EN everywhere, HU for Magyar tab */
+    body.lang-mix .l-en { display: inline; }
+    body.lang-mix #magyar .l-en { display: none; }
+    body.lang-mix #magyar .l-hu { display: inline; }
+    /* Block-level overrides */
+    .lb-en, .lb-hu, .lb-ru { display: none; }
+    body.lang-en .lb-en { display: block; }
+    body.lang-hu .lb-hu { display: block; }
+    body.lang-ru .lb-ru { display: block; }
+    body.lang-mix .lb-en { display: block; }
+    body.lang-mix #magyar .lb-en { display: none; }
+    body.lang-mix #magyar .lb-hu { display: block; }
+
+    /* MOBILE */
+    @media (max-width: 600px) {
+      .site-header { padding: 0 14px; gap: 10px; }
+      .site-meta { display: none; }
+      .site-name { font-size: 17px; }
+      .lang-btn { font-size: 10px; padding: 4px 7px; }
+      .content { padding: 24px 16px 56px; }
+      .section-cards { grid-template-columns: 1fr; }
+      .rate-value { font-size: 18px; }
+      .article-headline { font-size: 19px; }
+      .top-story { font-size: 18px; }
+      .meta-strip { padding: 6px 14px; flex-direction: column; align-items: flex-start; gap: 3px; }
+    }
+    @media (max-width: 380px) { .rates-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body class="lang-mix">
+
+<!-- HEADER -->
+<header class="site-header">
+  <div class="site-name">Oraculum</div>
+  <div class="site-meta">Morning Edition<br>July 3, 2026</div>
+  <div class="lang-switcher">
+    <button class="lang-btn active" onclick="setLang('mix', this)">MIX</button>
+    <button class="lang-btn" onclick="setLang('en', this)">EN</button>
+    <button class="lang-btn" onclick="setLang('hu', this)">HU</button>
+    <button class="lang-btn" onclick="setLang('ru', this)">RU</button>
+  </div>
+</header>
+
+<!-- META STRIP -->
+<div class="meta-strip">
+  <span>Last fetched: <strong>July 3, 2026 · 00:54 Budapest</strong></span>
+  <span>The last article written by Oraculum: <strong class="meta-accent">July 3, 2026 · 07:00</strong></span>
+</div>
+
+<!-- TAB NAV -->
+<nav class="tab-nav">
+  <button class="tab-btn active" onclick="showTab('summary', this)">Summary</button>
+  <button class="tab-btn" onclick="showTab('hot-topics', this)">Hot Topics</button>
+  <button class="tab-btn" onclick="showTab('magyar', this)">Magyar</button>
+  <button class="tab-btn" onclick="showTab('eu', this)">EU</button>
+  <button class="tab-btn" onclick="showTab('world', this)">World</button>
+  <button class="tab-btn" onclick="showTab('markets', this)">Markets</button>
+  <button class="tab-btn" onclick="showTab('space', this)">Space</button>
+</nav>
+
+<main class="content">
+
+<!-- ═══════ SUMMARY ═══════ -->
+<div id="summary" class="tab-panel active">
+  <div class="dateline"><span class="dateline-text">Budapest · Morning Briefing · July 3, 2026</span></div>
+
+  <div class="top-story-label">Top story</div>
+  <div class="top-story">FIFA president accused by European officials of engineering Russia's return to international football, exposing the deepening fault line between geopolitical reality and sport's claimed neutrality.</div>
+
+  <div class="lb-en lb-mix">
+    <p class="briefing-text">The morning's dominant thread is not any single crisis but the steady erosion of the frameworks we built to manage them. Take FIFA. The accusation that its president is facilitating Russia's reintegration into international football is not surprising — it was always a question of when, not whether. What is revealing is the framing: European officials invoke 'credibility' and 'integrity,' the same language FIFA uses to deflect political pressure. Both sides are playing politics while claiming not to. The real question is who has leverage. Russia knows that sports isolation is more painful symbolically than practically, and FIFA knows that European federations generate revenue but Global South votes generate power. Watch which way the math runs.</p>
+    <p class="briefing-text">Meanwhile, Germany has quietly reclassified the Nord Stream attack as a war crime — a legal escalation that almost no one is discussing with appropriate seriousness. If a war crime determination holds, it creates treaty obligations and political pressures that cannot be easily walked back. The silence around this story is itself a story. Strait of Hormuz traffic is 'way below pre-war levels' as Trump is being briefed on options for all-out war with Iran. That phrase — 'all-out war' — appearing in a headline as a briefing option rather than a worst-case scenario marks a threshold. Bitcoin bouncing off a 21-month low while leverage data signals caution is the crypto market doing what it always does: surviving its own obituary, but barely.</p>
+    <p class="briefing-text">And then there is Artemis II's 149 million streams — a genuine civilizational data point. Humanity watched astronauts loop around the Moon in real time, and almost nobody led with it. That inversion of attention is worth noting. What we choose to watch says as much as what is happening.</p>
+  </div>
+
+  <div class="lb-hu">
+    <p class="briefing-text">A reggel domináns szálát nem egyetlen válság adja, hanem azoknak a keretrendszereknek a fokozatos eróziója, amelyeket ezek kezelésére hoztunk létre. Vegyük a FIFA-t. Az a vád, hogy az elnök Oroszország visszaintegrálását segíti a nemzetközi futballba, nem meglepő — mindig az volt a kérdés, mikor, nem az, hogy egyáltalán. Ami árulkodó, az a keret: az európai tisztviselők 'hitelességet' és 'integritást' emlegetnek — ugyanazt a nyelvet, amellyel a FIFA szokta elhárítani a politikai nyomást. Mindkét oldal politizál, miközben azt állítja, hogy nem teszi. A valódi kérdés az, kinek van tőkeáttétele.</p>
+    <p class="briefing-text">Közben Németország csendesen háborús bűncselekménnyé minősítette át a Nord Stream elleni támadást — egy jogi eszkalációt, amelyről szinte senki sem beszél kellő komolysággal. A Hormuz-szoros forgalma 'jóval a háború előtti szint alatt' van, miközben Trumpot 'totális háborús' lehetőségekről tájékoztatják Iránnal kapcsolatban. A Bitcoin 21 hónapos mélypontról pattan vissza, miközben a tőkeáttételi adatok óvatosságra intenek. Az Artemis II 149 millió streamnézője viszont valódi civilizációs adat. Az emberiség valós időben nézte, ahogy asztronauták körülrepülik a Holdat — és szinte senki nem ezzel vezette a híreket.</p>
+  </div>
+
+  <div class="lb-ru">
+    <p class="briefing-text">Доминирующий мотив этого утра — не отдельный кризис, а планомерное разрушение рамок, которые мы выстраивали для управления ими. Возьмём ФИФА. Обвинение в том, что её президент содействует реинтеграции России в международный футбол, не удивляет: вопрос всегда был не 'будет ли', а 'когда'. Показательна сама рамка: европейские чиновники апеллируют к 'доверию' и 'целостности' — тем же словам, которыми ФИФА обычно отбивает политическое давление. Обе стороны занимаются политикой, утверждая обратное.</p>
+    <p class="briefing-text">Тем временем Германия тихо переквалифицировала атаку на «Северный поток» в военное преступление. Трафик через Ормузский пролив «значительно ниже довоенного уровня», пока Трампу докладывают о вариантах «тотальной войны» с Ираном. Bitcoin отскакивает от 21-месячного минимума. А вот 149 миллионов просмотров трансляции Artemis II — подлинный цивилизационный показатель. Человечество наблюдало в реальном времени, как астронавты облетают Луну, и почти никто не поставил это главной новостью.</p>
+  </div>
+
+  <div class="watch-next">
+    <span class="watch-next-label">▸ Watch next</span>
+    Watch for any formal FIFA governance response to the European accusations within the next 12 hours — if Infantino or his office pushes back publicly, it signals the Russia reintegration track is further along than officials are admitting.
+  </div>
+
+  <!-- THREADS -->
+  <div class="dateline threads-dateline"><span class="dateline-text">Open threads</span></div>
+
+  <div class="thread-item thread-toggle" onclick="toggleThread(this)">
+    <span class="thread-badge badge-developing">Developing</span>
+    <div><div class="thread-summary">Russia reintegration into international football — FIFA president under fire from European officials</div>
+    <div class="thread-detail">Watch for: FIFA's formal response, any UEFA threat of withdrawal or sanctions, and whether the Global South federations rally behind Infantino.</div></div>
+  </div>
+  <div class="thread-item thread-toggle" onclick="toggleThread(this)">
+    <span class="thread-badge badge-developing">Developing</span>
+    <div><div class="thread-summary">Germany reclassifies Nord Stream attack as war crime — a legal escalation receiving almost no mainstream attention</div>
+    <div class="thread-detail">Watch for: Whether Germany names a suspect state or actor formally, and whether this triggers EU-level treaty obligations.</div></div>
+  </div>
+  <div class="thread-item thread-toggle" onclick="toggleThread(this)">
+    <span class="thread-badge badge-developing">Developing</span>
+    <div><div class="thread-summary">Hormuz Strait traffic way below pre-war levels as Trump is briefed on "all-out war" options against Iran</div>
+    <div class="thread-detail">Watch for: Military positioning announcements, Congressional consultation signals, or Iranian counter-statements in the next 24 hours.</div></div>
+  </div>
+  <div class="thread-item thread-toggle" onclick="toggleThread(this)">
+    <span class="thread-badge badge-developing">Developing</span>
+    <div><div class="thread-summary">Bitcoin bounced from 21-month low near $57K — leverage data signals the rebound may be fragile</div>
+    <div class="thread-detail">Watch for: Whether ETF outflow data reverses and whether major institutional holders publicly change posture.</div></div>
+  </div>
+  <div class="thread-item thread-toggle" onclick="toggleThread(this)">
+    <span class="thread-badge badge-new">New today</span>
+    <div><div class="thread-summary">László Krasznahorkai refuses National Artist award — Nobel laureate signals cultural distance from Orbán government</div>
+    <div class="thread-detail">Watch for: Government reaction and whether other cultural figures follow suit or face pressure.</div></div>
+  </div>
+  <div class="thread-item thread-toggle" onclick="toggleThread(this)">
+    <span class="thread-badge badge-new">New today</span>
+    <div><div class="thread-summary">Hungary revokes asylum rights for Polish politicians admitted by Orbán — reversal signals shifting V4 dynamics</div>
+    <div class="thread-detail">Watch for: Warsaw's formal response and whether this triggers a broader review of Budapest-Warsaw relations.</div></div>
+  </div>
+  <div class="thread-item thread-toggle" onclick="toggleThread(this)">
+    <span class="thread-badge badge-developing">Developing</span>
+    <div><div class="thread-summary">Spain's opposition accuses Sánchez of electoral engineering after mass migrant legalization — 1.7M applicants</div>
+    <div class="thread-detail">Watch for: Legal challenges and any EU-level scrutiny that would escalate this from domestic politics to a test case for EU migration governance.</div></div>
+  </div>
+  <div class="thread-item thread-toggle" onclick="toggleThread(this)">
+    <span class="thread-badge badge-new">New today</span>
+    <div><div class="thread-summary">Andy Burnham (UK PM from July 20) pledges to address defense budget black hole he was unaware of</div>
+    <div class="thread-detail">Watch for: Specifics of where Burnham intends to find the billions — tax rises, borrowing, or cuts — which will define his government's early character.</div></div>
+  </div>
+  <div class="thread-item thread-toggle" onclick="toggleThread(this)">
+    <span class="thread-badge badge-developing">Developing</span>
+    <div><div class="thread-summary">Zelenskyy urges Ireland to halt alumina exports to Russia — shifting to economic pressure track</div>
+    <div class="thread-detail">Watch for: Ireland's official response and whether other EU states face similar targeted appeals.</div></div>
+  </div>
+  <div class="thread-item thread-toggle" onclick="toggleThread(this)">
+    <span class="thread-badge badge-developing">Developing</span>
+    <div><div class="thread-summary">Artemis II: 149.4M streams across NASA platforms — civilizational data point largely ignored by mainstream media</div>
+    <div class="thread-detail">Watch for: NASA's next Artemis III timeline announcement and crew confirmation.</div></div>
+  </div>
+
+  <!-- SECTION CARDS -->
+  <div class="dateline" style="margin-top:40px"><span class="dateline-text">Jump to section</span></div>
+  <div class="section-cards">
+    <div class="section-card" onclick="showTabById('hot-topics')">
+      <div class="card-label">🔥 Hot Topics</div>
+      <div class="card-headline">European officials accuse FIFA chief of enabling Russia's return to international football</div>
+    </div>
+    <div class="section-card" onclick="showTabById('magyar')">
+      <div class="card-label">🇭🇺 Magyar</div>
+      <div class="card-headline">Krasznahorkai László nem fogadja el a Nemzet Művésze elismerést</div>
+    </div>
+    <div class="section-card" onclick="showTabById('eu')">
+      <div class="card-label">🇪🇺 EU</div>
+      <div class="card-headline">Andy Burnham commits to find billions to fill UK's defense black hole</div>
+    </div>
+    <div class="section-card" onclick="showTabById('world')">
+      <div class="card-label">🌍 World</div>
+      <div class="card-headline">Russia continues attacks on Kyiv; wildfires spread across southern France</div>
+    </div>
+    <div class="section-card" onclick="showTabById('markets')">
+      <div class="card-label">📈 Markets</div>
+      <div class="card-headline">Bitcoin bounces off 21-month low near $57K — leverage data signals caution</div>
+    </div>
+    <div class="section-card" onclick="showTabById('space')">
+      <div class="card-label">🚀 Space</div>
+      <div class="card-headline">NASA's Artemis II breaks agency streaming record with 149.4M views</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════ HOT TOPICS ═══════ -->
+<div id="hot-topics" class="tab-panel">
+  <div class="dateline"><span class="dateline-text">Global · Hot Topics</span></div>
+
+  <article class="featured-article">
+    <div class="article-source">newsapi.org · cryptobriefing.com</div>
+    <h2 class="article-headline"><a href="https://cryptobriefing.com/european-officials-accuse-fifa-infantino-russia-return/" target="_blank">European officials accuse FIFA chief of enabling Russia's return to international football</a></h2>
+    <p class="article-summary">
+      <span class="l-en">European officials accuse FIFA's president of allowing Russia's return to international football. The move risks increasing tensions in global sports governance. It challenges the balance between politics and sports.</span>
+      <span class="l-hu">Az európai hivatalnokok vádolják a FIFA elnökét, hogy engedélyezi Oroszország visszatérését a nemzetközi labdarúgásba. A lépés kockázatba szorítja a globális sporturalomban fellépő feszültségeket. Megkérdőjelezi a politika és a sport közötti egyensúlyt.</span>
+      <span class="l-ru">Европейские официалы обвиняют президента ФИФА в допущении возвращения России к международному футболу. Это действие может усугубить напряженность в международном спортивном управлении.</span>
+    </p>
+    <div class="article-expanded" id="exp-ht1">
+      <span class="l-en">European officials have accused FIFA's president of facilitating Russia's reintegration into international football, highlighting growing tensions within global sports governance. The move is seen as a potential deepening of existing rifts, as the organization faces pressure to balance political considerations with its sporting mission. FIFA's push for Russian reintegration has sparked criticism from European leaders who argue it undermines the organization's credibility. Russia knows that sports isolation is more painful symbolically than practically, and FIFA knows that European federations generate revenue but Global South votes generate power.</span>
+      <span class="l-hu">A európai hivatalnokok vádolják a FIFA elnökét, hogy a Oroszország visszajutását segíti elő a nemzetközi labdarúgásba. A döntés kihívást jelent a hosszú ideig érvényben lévő politikai neutralitás elvét, és aggályokat vált ki a nemzetközi versenyek integritásával kapcsolatban. A FIFA támogatása az orosz visszajutásnak az európai vezetők szerint csökkenti a szervezet hitelét.</span>
+      <span class="l-ru">Европейские официалы обвиняют президента ФИФА в том, что он способствует возвращению России в международный футбол. Поддержка ФИФА возвращению России вызывает критику со стороны европейских лидеров. Ситуация отражает сложные отношения между политикой и спортом.</span>
+    </div>
+    <button class="expand-btn" onclick="toggleExpand('exp-ht1', this)">▸ Read more</button><a class="source-link" href="https://cryptobriefing.com/european-officials-accuse-fifa-infantino-russia-return/" target="_blank">→ Source</a>
+  </article>
+
+  <article class="featured-article">
+    <div class="article-source">newsapi.org · theverge.com</div>
+    <h2 class="article-headline"><a href="https://www.theverge.com/tech/959848/bittorrent-story-25-years-piracy" target="_blank">BitTorrent's disastrous, legendary, and controversial story — 25 years on</a></h2>
+    <p class="article-summary">
+      <span class="l-en">Twenty-five years ago, Bram Cohen introduced BitTorrent, a peer-to-peer file-sharing protocol, by sending a brief message to a mailing list. Cohen's creation revolutionized file sharing but also sparked significant debate over copyright and digital distribution.</span>
+      <span class="l-hu">Huszonöt éve, Bram Cohen egy peer-to-peer híradólistára küldött rövid üzenetet. Az üzenetben bejelentette új alkalmazását, a BitTorrentet. A készülék nagy hatással volt a digitális megosztásra, de számos vitát is kiváltott.</span>
+      <span class="l-ru">Двадцать пять лет назад Брам Коэн отправил короткое сообщение на список рассылки, объявив о своём приложении BitTorrent. Его разработка революционизировала обмен файлами, но также вызвала значительные споры.</span>
+    </p>
+    <div class="article-expanded" id="exp-ht2">
+      <span class="l-en">Twenty-five years ago, Bram Cohen introduced BitTorrent, a peer-to-peer file-sharing protocol that revolutionized data distribution. The technology allowed users to share large files efficiently by breaking them into smaller pieces and distributing them across multiple users. BitTorrent's creation sparked both innovation and controversy, as it became a tool for both legitimate file sharing and illegal content distribution. Its impact on internet culture and copyright laws has been significant, making it a pivotal moment in digital history.</span>
+      <span class="l-hu">Huszonöt évvel ezelőtt Bram Cohen megalkotta a BitTorrentet, amely megváltoztatta a digitális adatátvitelt. A technológia lehetővé tette a felhasználók számára, hogy nagy fájlokat hatékonyan osszanak meg. A BitTorrent törvénytelen tartalmak megosztására is eszközül szolgált, és hatása a szerzői jogokra jelentős volt.</span>
+      <span class="l-ru">Двадцать пять лет назад Брам Коэн создал BitTorrent — революцию в распределении данных. Технология позволяла пользователям эффективно делиться файлами. Она вызвала как инновации, так и споры по поводу авторских прав.</span>
+    </div>
+    <button class="expand-btn" onclick="toggleExpand('exp-ht2', this)">▸ Read more</button><a class="source-link" href="https://www.theverge.com/tech/959848/bittorrent-story-25-years-piracy" target="_blank">→ Source</a>
+  </article>
+
+  <div class="minor-block">
+    <div class="minor-block-label">Also in Hot Topics</div>
+    <div class="minor-item">
+      <a href="https://www.rt.com/news/642457-nord-stream-war-crime/" target="_blank">Germany now treats Nord Stream attack as 'war crime'</a>
+      <span class="minor-summary">
+        <span class="l-en">Germany has classified the Nord Stream attack as a war crime according to media reports — a legal escalation receiving almost no mainstream attention.</span>
+        <span class="l-hu">Németország a Nord Stream támadást háborús bűncselekménynek minősítette — egy jogi eszkalációt, amelyről szinte senki sem beszél.</span>
+        <span class="l-ru">Германия классифицировала нападение на Nord Stream как военное преступление — юридическая эскалация, практически не получившая внимания.</span>
+      </span>
+    </div>
+    <div class="minor-item">
+      <a href="http://theeconomiccollapseblog.com/traffic-through-the-strait-of-hormuz-is-way-below-pre-war-levels-as-trump-is-briefed-on-options-for-all-out-war/" target="_blank">Traffic through the Strait of Hormuz is way below pre-war levels as Trump is briefed on "all-out war" options</a>
+      <span class="minor-summary">
+        <span class="l-en">Traffic through the Strait of Hormuz has dropped significantly below pre-war levels as Trump is briefed on potential options for an all-out war against Iran.</span>
+        <span class="l-hu">A Hormusz-szoroson át haladó forgalom jelentősen csökkent a háború előtti szint alá, miközben Trumpot tájékoztatnak egy teljes katonai háború lehetőségeiről.</span>
+        <span class="l-ru">Трафик через пролив Ормуз значительно упал ниже довоенного уровня, пока Трампу докладывают о возможных вариантах войны.</span>
+      </span>
+    </div>
+    <div class="minor-item">
+      <a href="https://www.irishtimes.com/ireland/2026/07/01/volodymyr-zelenskiy-urges-irish-government-to-cut-off-alumina-supply-to-russia/" target="_blank">Zelenskyy urges Irish Government to cut off alumina supply to Russia</a>
+      <span class="minor-summary">
+        <span class="l-en">Zelenskyy has called on the Irish Government to stop supplying alumina to Russia — shifting to an economic pressure track alongside military aid lobbying.</span>
+        <span class="l-hu">Zelenszkij sürgeti az ír kormányt, hogy szakítsa meg az alumíniumoxid ellátást Oroszország számára.</span>
+        <span class="l-ru">Зеленский призывает ирландское правительство прекратить поставки глинозёма в Россию.</span>
+      </span>
+    </div>
+  </div>
+
+  <div class="overview-block">
+    <div class="overview-label">Overview</div>
+    <p class="overview-text">
+      <span class="l-en">Meanwhile, the U.S. and U.K. are reshaping Syria's energy landscape, while Russia faces continued battlefield losses. An explosion in Monaco raises questions about Vadym Yermolaiev, and Ukraine declines Irish vehicle offers due to high refurbishment costs. The Iran talks reveal a significant decline in U.S. diplomatic efforts.</span>
+      <span class="l-hu">Eközben az Egyesült Államok és az Egyesült Királyság átformálja Szíria energiatervezetét, miközben Oroszország hatalmas háborús veszteségeket szenved. A Monacói robbanás felvet kérdéseket Vadym Yermolaiev kapcsán. Az iráni tárgyalások az amerikai diplomáciai erőfeszítések csökkenését jelzik.</span>
+      <span class="l-ru">США и Великобритания перекраивают энергетику Сирии, а Россия несёт потери на поле боя. Взрыв в Монако поднимает вопросы о Вадиме Ермолаеве. Переговоры по Ирану свидетельствуют об ослаблении дипломатических усилий США.</span>
+    </p>
+  </div>
+</div>
+
+
+<!-- ═══════ MAGYAR ═══════ -->
+<div id="magyar" class="tab-panel">
+  <div class="dateline"><span class="dateline-text">Budapest · Magyar hírek</span></div>
+
+  <article class="featured-article">
+    <div class="article-source">telex.hu</div>
+    <h2 class="article-headline"><a href="https://telex.hu/kulfold/2026/07/02/eszak-karolina-egyesult-allamok-templom-langszoro-szamszerij-loszer" target="_blank">
+      <span class="l-en">Man with two flamethrowers and hundreds of rounds of ammunition stopped before entering church in North Carolina</span>
+      <span class="l-hu">Két lángszóróval és több száz lőszerrel ment templomba egy észak-karolinai férfi</span>
+      <span class="l-ru">Мужчина из Северной Каролины с двумя огнемётами задержан перед церковью</span>
+    </a></h2>
+    <p class="article-summary">
+      <span class="l-en">A man from North Carolina was arrested with two flamethrowers and hundreds of rounds of ammunition before entering a church. Authorities intercepted him at the entrance, preventing any potential harm.</span>
+      <span class="l-hu">Egy észak-karolinai férfi két lángszóróval és több száz lőszerrel ment templomba. Még a templom előtt letartóztatták.</span>
+      <span class="l-ru">Мужчина из Северной Каролины был арестован с двумя огнемётами и сотнями патронов перед входом в церковь.</span>
+    </p>
+    <div class="article-expanded" id="exp-hu1">
+      <span class="l-en">A man from North Carolina was arrested with two flamethrowers and hundreds of rounds of ammunition before entering a church. The incident highlights growing concerns about gun violence and potential threats to religious institutions. Authorities intercepted him at the church entrance, preventing any potential harm. The arrest underscores the need for increased security measures in places of worship.</span>
+      <span class="l-hu">Egy észak-karolinai férfi két lángszóróval és több száz lőszerrel ment templomba, de még a templom előtt letartóztatták. A rendőrök az épület előtt szorították le a férfit, megelőzve bármilyen katasztrófát. A történet hangsúlyozza a szükségességet a templomok biztonsági intézkedéseire.</span>
+      <span class="l-ru">Мужчина был арестован с двумя огнемётами и сотнями патронов перед входом в церковь. Полиция задержала его на входе, предотвратив возможный вред.</span>
+    </div>
+    <button class="expand-btn" onclick="toggleExpand('exp-hu1', this)">▸ <span class="l-en l-mix">Read more</span><span class="l-hu">Tovább</span><span class="l-ru">Далее</span></button><a class="source-link" href="https://telex.hu/kulfold/2026/07/02/eszak-karolina-egyesult-allamok-templom-langszoro-szamszerij-loszer" target="_blank">→ telex.hu</a>
+  </article>
+
+  <article class="featured-article">
+    <div class="article-source">telex.hu</div>
+    <h2 class="article-headline"><a href="https://telex.hu/karakter/kultura/2026/07/02/krasznahorkai-laszlo-nemzet-muvesze-jeloles-elutasitas" target="_blank">
+      <span class="l-en">Nobel laureate László Krasznahorkai refuses Hungary's National Artist award</span>
+      <span class="l-hu">Krasznahorkai László nem fogadja el a Nemzet Művésze elismerést</span>
+      <span class="l-ru">Нобелевский лауреат Ласло Красногорской отказывается от звания «Государственный художник» Венгрии</span>
+    </a></h2>
+    <p class="article-summary">
+      <span class="l-en">László Krasznahorkai, the Nobel Prize-winning author, refused to accept the National Artist award. He expressed his sorrow in a statement: 'I am so sad that I have to say this.'</span>
+      <span class="l-hu">Krasznahorkai László nem fogadja el a Nemzet Művésze elismerést. A Nobel-díjas író szomorúságát fejezte ki: „Ennyire szomorú vagyok, hogy ezt kell mondanom!"</span>
+      <span class="l-ru">Ласло Красногорской, лауреат Нобелевской премии, отказался от награды. В заявлении: «Я так грустен, что мне приходится это сказать».</span>
+    </p>
+    <div class="article-expanded" id="exp-hu2">
+      <span class="l-en">László Krasznahorkai, the Nobel Prize-winning author, has refused to accept the National Artist award, expressing his sorrow in a pointed statement. The decision highlights his personal stance — which may reflect broader philosophical or political views about the relationship between artists and state recognition. The award has been controversial in Hungary before. Krasznahorkai's refusal underscores the complex and increasingly strained relationship between Hungary's literary elite and the Orbán government.</span>
+      <span class="l-hu">László Krasznahorkai, a Nobel-díjas író, elutasította a Nemzet Művésze elismerést. „Annyira szomorú vagyok, hogy ezt kell mondanom!" — mondta nyilatkozatában. A döntés tükrözi a művész és az állami elismerés közötti bonyolult viszonyt. Krasznahorkai elutasítása a magyar irodalmi elit és az Orbán-kormány közötti növekvő kulturális távolságot jelzi.</span>
+      <span class="l-ru">Ласло Красногорской отказался от государственной награды, выразив скорбь в заявлении. Это решение подчёркивает сложные отношения между венгерской литературной элитой и правительством Орбана.</span>
+    </div>
+    <button class="expand-btn" onclick="toggleExpand('exp-hu2', this)">▸ <span class="l-en l-mix">Read more</span><span class="l-hu">Tovább</span><span class="l-ru">Далее</span></button><a class="source-link" href="https://telex.hu/karakter/kultura/2026/07/02/krasznahorkai-laszlo-nemzet-muvesze-jeloles-elutasitas" target="_blank">→ telex.hu</a>
+  </article>
+
+  <div class="minor-block">
+    <div class="minor-block-label">
+      <span class="l-en">Also in Magyar</span>
+      <span class="l-hu">Más hírek</span>
+      <span class="l-ru">Другие новости</span>
+    </div>
+    <div class="minor-item">
+      <a href="https://telex.hu/sport/2026/07/02/spanyolorszag-ausztria-yamal-oyarzabal" target="_blank">
+        <span class="l-en">Spain eliminated Austria convincingly in the football tournament</span>
+        <span class="l-hu">Spanyolország favorithoz méltón ejtette ki Ausztriát</span>
+        <span class="l-ru">Испания убедительно выбила Австрию из турнира</span>
+      </a>
+      <span class="minor-summary">
+        <span class="l-en">Spain defeated Austria convincingly in the match.</span>
+        <span class="l-hu">Spanyolország megdöntötte Ausztriát a mérkőzésen.</span>
+        <span class="l-ru">Испания одержала убедительную победу над Австрией.</span>
+      </span>
+    </div>
+    <div class="minor-item">
+      <a href="https://telex.hu/kulfold/2026/07/02/politika-menedekjog-visszavonasa-zbigniew-ziobro-marcin-romanowski-lengyelorszag" target="_blank">
+        <span class="l-en">Hungary revoked asylum rights for Polish politicians admitted by the Orbán government</span>
+        <span class="l-hu">Magyarország visszavonta a menedékjogot az Orbánék által befogadott lengyel politikusoktól</span>
+        <span class="l-ru">Венгрия отозвала право на убежище у польских политиков, принятых правительством Орбана</span>
+      </a>
+      <span class="minor-summary">
+        <span class="l-en">A notable reversal signaling shifting political calculations within the V4 alignment.</span>
+        <span class="l-hu">Figyelemre méltó fordulat, amely a V4-en belüli politikai számítások változását jelzi.</span>
+        <span class="l-ru">Примечательный разворот, сигнализирующий об изменениях политических расчётов внутри В4.</span>
+      </span>
+    </div>
+    <div class="minor-item">
+      <a href="https://telex.hu/kulfold/2026/07/02/nemetorszag-naci-mult-nsdap-tagsag-adatbazis-kereshetoseg-szemelyes-tortenetek-csalad" target="_blank">
+        <span class="l-en">Many saw him as a martyr — then his name appeared in the Nazi party files</span>
+        <span class="l-hu">Sokan mártírként tekintenek rá. Aztán a neve megjelent a náci párt aktáiban</span>
+        <span class="l-ru">Многие видели его мучеником — затем его имя появилось в актах нацистской партии</span>
+      </a>
+      <span class="minor-summary">
+        <span class="l-en">Germany opens its NSDAP membership database to public search — uncovering complex family histories across Europe.</span>
+        <span class="l-hu">Németország megnyitja az NSDAP tagnyilvántartást nyilvános keresésre — komplex családtörténetek kerülnek napvilágra.</span>
+        <span class="l-ru">Германия открывает базу данных членов НСДАП для публичного поиска.</span>
+      </span>
+    </div>
+  </div>
+
+  <div class="overview-block">
+    <div class="overview-label">
+      <span class="l-en">Overview</span>
+      <span class="l-hu">Összefoglaló</span>
+      <span class="l-ru">Обзор</span>
+    </div>
+    <p class="overview-text">
+      <span class="l-en">In other news, Debrecen's mayor blames the government over Semcorp, Spain beats Austria 3-0. The National Cooperation Fund review continues through summer, and a plan to reduce healthcare waiting lists must be finalized by August 15.</span>
+      <span class="l-hu">Debrecen polgármestere a kormányt vádolja Semcorp miatt, Spanyolország 3-0-ra győz Ausztria ellen. A Nemzeti Együttműködési Alap átvilágítása nyár végéig tart, az egészségügyi várólisták csökkentési tervének kidolgozása augusztus 15-ig tart.</span>
+      <span class="l-ru">Мэр Дебрецена обвиняет правительство в Semcorp, Испания побеждает Австрию 3:0. Проверка Национального фонда сотрудничества продолжается до конца лета.</span>
+    </p>
+  </div>
+</div>
+
+
+<!-- ═══════ EU ═══════ -->
+<div id="eu" class="tab-panel">
+  <div class="dateline"><span class="dateline-text">Brussels · EU News</span></div>
+
+  <article class="featured-article">
+    <div class="article-source">politico.eu</div>
+    <h2 class="article-headline"><a href="https://www.politico.eu/article/andy-burnham-commits-to-find-billions-to-fill-uk-defense-black-hole/" target="_blank">Andy Burnham commits to find billions to fill UK's defense black hole</a></h2>
+    <p class="article-summary">
+      <span class="l-en">Andy Burnham has pledged to find billions to address the UK's defense funding gap. He admitted being surprised by the funding shortfall in his predecessor's defense plan. Burnham is set to become Britain's prime minister on July 20.</span>
+      <span class="l-hu">Andy Burnham ígérte, hogy milliárdokat talál megtölteni a brit védelmi pénzügyi hiányt. Elismerte, hogy meglepődött a korábbi miniszterelnök védelmi tervének pénzügyi hiányában. Burnham július 20-án lesz a brit miniszterelnök.</span>
+      <span class="l-ru">Энди Бернхэм обещает найти миллиарды, чтобы заполнить дефицит финансирования обороны Великобритании. Он признал, что был удивлён дефицитом в планах своего предшественника. Бернхэм станет британским премьер-министром 20 июля.</span>
+    </p>
+    <div class="article-expanded" id="exp-eu1">
+      <span class="l-en">Andy Burnham, set to become the UK's prime minister on July 20, has pledged to address a significant funding gap in the country's defense budget, which he was unaware of during his predecessor Keir Starmer's plan. The defense black hole highlights a critical shortfall in military spending, raising concerns about the UK's readiness and strategic preparedness. Burnham's commitment signals a shift in priorities, emphasizing the need for increased investment in national security. This development may influence future defense policies and international relations — particularly within NATO commitments.</span>
+      <span class="l-hu">Andy Burnham, aki július 20-án lesz a brit miniszterelnök, ígéretet tett a védelmi költségvetés nagy hiányának megoldására. A védelmi hiány a brit hadsereg készültségének kritikus hiányát jelenti. Burnham ígérete a prioritások változását jelzi, hangsúlyozva a nemzeti biztonság növelését — különösen a NATO kötelezettségek tükrében.</span>
+      <span class="l-ru">Энди Бернхэм, который станет британским премьером 20 июля, обещает устранить значительный дефицит оборонного бюджета. Это решение указывает на сдвиг приоритетов в сторону национальной безопасности в контексте обязательств перед НАТО.</span>
+    </div>
+    <button class="expand-btn" onclick="toggleExpand('exp-eu1', this)">▸ Read more</button><a class="source-link" href="https://www.politico.eu/article/andy-burnham-commits-to-find-billions-to-fill-uk-defense-black-hole/" target="_blank">→ Politico</a>
+  </article>
+
+  <article class="featured-article">
+    <div class="article-source">politico.eu</div>
+    <h2 class="article-headline"><a href="https://www.politico.eu/article/spains-opposition-alberto-nunez-feijoo-accuses-pedro-sanchez-of-electoral-engineering-after-migrant-legalization-drive/" target="_blank">Spain's opposition accuses Sánchez of electoral engineering after migrant legalization drive</a></h2>
+    <p class="article-summary">
+      <span class="l-en">Spain's opposition accuses Prime Minister Pedro Sánchez of manipulating the electoral process following the migrant legalization drive. Over half of the 1.7 million applicants have already received provisional residency and work permits.</span>
+      <span class="l-hu">Spanyol ellenzék vádolja Sánchez miniszterelnököt választási manipulációval a migránsok jogosultságának kiadása után. A 1,7 millió kérelmező közül több mint fele már kapott ideiglenes tartózkodási és munkaengedélyt.</span>
+      <span class="l-ru">Испанская оппозиция обвиняет Санчеса в манипуляциях на выборах после кампании по легализации мигрантов. Более половины из 1,7 миллиона заявителей уже получили временные разрешения.</span>
+    </p>
+    <div class="article-expanded" id="exp-eu2">
+      <span class="l-en">Spain's opposition has accused PM Pedro Sánchez of engaging in electoral engineering following a large-scale migrant legalization initiative. The program has already issued provisional residency and work permits to more than half of 1.7 million applicants. The opposition claims this is politically motivated, designed to bolster Sánchez's support ahead of upcoming elections. The controversy highlights the deepening political divide over immigration and the potential for such policies to influence electoral outcomes — and may draw EU-level scrutiny.</span>
+      <span class="l-hu">Spanyolország ellenzéke vádolja Sánchez miniszterelnököt választási manipulációval. A program már kiadott ideiglenes tartózkodási és munkaengedélyt 1,7 millió kérelmező több mint felének. Ha Brüsszel beavatkozik, ez az ügyet hazai politikából uniós migrációs tesztesetté válik.</span>
+      <span class="l-ru">Оппозиция Испании обвиняет Санчеса в электоральных манипуляциях после масштабной легализации мигрантов. Если в дело вмешается Брюссель, это превратит вопрос из внутренней политики в тест для миграционного управления ЕС.</span>
+    </div>
+    <button class="expand-btn" onclick="toggleExpand('exp-eu2', this)">▸ Read more</button><a class="source-link" href="https://www.politico.eu/article/spains-opposition-alberto-nunez-feijoo-accuses-pedro-sanchez-of-electoral-engineering-after-migrant-legalization-drive/" target="_blank">→ Politico</a>
+  </article>
+
+  <div class="minor-block">
+    <div class="minor-block-label">Also in EU</div>
+    <div class="minor-item">
+      <a href="https://www.politico.eu/podcast/playbook-paris-podcast/tous-bienvenus-aux-rencontres-daix-sauf-rn-et-lfi/" target="_blank">All welcome at Rencontres d'Aix — except RN and LFI</a>
+      <span class="minor-summary">
+        <span class="l-en">France's major annual economics conference excludes far-right RN and far-left LFI from participation — a deliberate political signal.</span>
+        <span class="l-hu">Franciaország legnagyobb éves gazdasági konferenciája kizárja a szélsőjobbos RN-t és a szélsőbalos LFI-t — tudatos politikai jelzés.</span>
+        <span class="l-ru">Крупнейшая французская экономическая конференция исключает крайне правых RN и крайне левых LFI — намеренный политический сигнал.</span>
+      </span>
+    </div>
+    <div class="minor-item">
+      <a href="https://www.politico.eu/list/power-40-paris-notre-classement-2026/vincent-bollore/" target="_blank">Politico Power 40 Paris 2026: Vincent Bolloré</a>
+      <span class="minor-summary">
+        <span class="l-en">The French media mogul features in Politico's annual ranking of Paris power players — a reminder of conservative media's growing influence in France.</span>
+        <span class="l-hu">A francia médiamoghul szerepel a Politico éves párizsi hatalmi rangsorában — emlékeztető a konzervatív média növekvő befolyására Franciaországban.</span>
+        <span class="l-ru">Французский медиамагнат в ежегодном рейтинге влиятельных лиц Парижа по версии Politico.</span>
+      </span>
+    </div>
+    <div class="minor-item">
+      <a href="https://www.politico.eu/list/power-40-paris-notre-classement-2026/flavie-flament/" target="_blank">Politico Power 40 Paris 2026: Flavie Flament</a>
+      <span class="minor-summary">
+        <span class="l-en">French model and television personality Flavie Flament makes the list — reflecting shifting cultural power dynamics in Paris.</span>
+        <span class="l-hu">Flavie Flament francia színésznő és tévés személyiség felkerül a listára — a párizsi kulturális hatalmi dinamika változását jelezve.</span>
+        <span class="l-ru">Флавии Фламан попала в рейтинг — отражая меняющуюся культурную динамику Парижа.</span>
+      </span>
+    </div>
+  </div>
+
+  <div class="overview-block">
+    <div class="overview-label">Overview</div>
+    <p class="overview-text">
+      <span class="l-en">Russia continues its attacks on Kyiv, causing casualties and damage. Wildfires are spreading across southern France following a heatwave. Meanwhile, a Venezuelan man was rescued alive after being trapped for eight days following earthquakes.</span>
+      <span class="l-hu">Oroszország folytatja kijevi támadásait. A hőhullám után tűzvészek terjednek a déli Franciaországban. Egy venezuelai férfi életben maradt, miután nyolc nappal a földrengés után kiszabadult a romok alól.</span>
+      <span class="l-ru">Россия продолжает атаки на Киев. В южной Франции распространяются лесные пожары. Венесуэльский мужчина был спасён живым спустя восемь дней после землетрясения.</span>
+    </p>
+  </div>
+</div>
+
+
+<!-- ═══════ WORLD ═══════ -->
+<div id="world" class="tab-panel">
+  <div class="dateline"><span class="dateline-text">World · Global News</span></div>
+
+  <article class="featured-article">
+    <div class="article-source">bbc.com</div>
+    <h2 class="article-headline"><a href="https://www.bbc.co.uk/news/articles/cn8k774pm3jo" target="_blank">Married at First Sight UK star arrested on suspicion of rape following BBC Panorama investigation</a></h2>
+    <p class="article-summary">
+      <span class="l-en">A Married at First Sight UK star has been arrested on suspicion of rape. The arrest follows a BBC Panorama investigation into the Channel 4 reality TV show, which was broadcast in May.</span>
+      <span class="l-hu">Egy Married at First Sight UK szereplőt letartóztattak bűntett gyanúja miatt. A letartóztatás egy BBC Panorama-vizsgálatot követett, amelyet májusban sugároztak.</span>
+      <span class="l-ru">Участник британского шоу «Женат с первого взгляда» арестован по подозрению в насилии после расследования BBC Panorama.</span>
+    </p>
+    <div class="article-expanded" id="exp-w1">
+      <span class="l-en">A Married at First Sight UK star has been arrested on suspicion of rape, following a BBC Panorama investigation broadcast in May. The investigation focused on the Channel 4 reality TV show, uncovering allegations of misconduct by participants. The arrest raises questions about the safety and well-being of participants in reality TV programs and the accountability of production companies.</span>
+      <span class="l-hu">A BBC Panorama-vizsgálat nyomán letartóztatták a valóságshow szereplőjét. Az eset felveti a reality-tv műsorokban részt vevők biztonságának és a gyártók felelősségvállalásának kérdését.</span>
+      <span class="l-ru">Расследование BBC Panorama привело к аресту участника реалити-шоу. Дело поднимает вопросы безопасности участников подобных программ и ответственности продюсеров.</span>
+    </div>
+    <button class="expand-btn" onclick="toggleExpand('exp-w1', this)">▸ Read more</button><a class="source-link" href="https://www.bbc.co.uk/news/articles/cn8k774pm3jo" target="_blank">→ BBC</a>
+  </article>
+
+  <article class="featured-article">
+    <div class="article-source">bbc.com</div>
+    <h2 class="article-headline"><a href="https://www.bbc.co.uk/news/articles/cvg53d9p18vo" target="_blank">Boys who raped teen girls given custodial sentences after initial non-custodial ruling</a></h2>
+    <p class="article-summary">
+      <span class="l-en">Two teenage boys convicted of raping teen girls have been given custodial sentences after initially receiving non-custodial sentences. The court's decision reflects a shift following public and legal pressure.</span>
+      <span class="l-hu">Két ifjú fiút, akik meggyaláztak lány áldozatokat, börtönbüntetéssel sújtottak a kezdeti nem szabadságvesztéses ítélet után.</span>
+      <span class="l-ru">Двое подростков, осуждённых за изнасилование, получили реальный срок после первоначального мягкого приговора.</span>
+    </p>
+    <div class="article-expanded" id="exp-w2">
+      <span class="l-en">Two teenage boys convicted of raping teen girls have been given custodial sentences after initially receiving non-custodial sentences. The court's decision reflects a shift in sentencing following public and legal pressure to hold perpetrators accountable. The case has sparked debates about juvenile justice and the severity of sexual crimes committed by minors. This ruling may influence future sentencing practices for similar crimes.</span>
+      <span class="l-hu">A bíróság döntése a közvélemény és jogi nyomás következtében történt. Az eset vitát váltott ki a fiatalkorú igazságszolgáltatás és a súlyos bűncselekmények kérdéséről. A döntés hatással lehet a hasonló bűncselekmények jövőbeli büntetési gyakorlatára.</span>
+      <span class="l-ru">Решение суда отражает сдвиг под давлением общества. Дело вызвало споры о ювенальной юстиции и тяжких преступлениях несовершеннолетних.</span>
+    </div>
+    <button class="expand-btn" onclick="toggleExpand('exp-w2', this)">▸ Read more</button><a class="source-link" href="https://www.bbc.co.uk/news/articles/cvg53d9p18vo" target="_blank">→ BBC</a>
+  </article>
+
+  <div class="minor-block">
+    <div class="minor-block-label">Also in World</div>
+    <div class="minor-item">
+      <a href="https://www.bbc.co.uk/news/articles/c1kyr8747m9o" target="_blank">Pubs allowed to stay open until 5am for England-Mexico match</a>
+      <span class="minor-summary">
+        <span class="l-en">Pubs in England were allowed to stay open until 5am for the Mexico match — reflecting the tournament's unusual scheduling.</span>
+        <span class="l-hu">Az angliai kocsmákat engedték nyitva tartani hajnali 5-ig a Mexikó elleni mérkőzés miatt.</span>
+        <span class="l-ru">Пабы в Англии могли оставаться открытыми до 5 утра из-за матча с Мексикой.</span>
+      </span>
+    </div>
+    <div class="minor-item">
+      <a href="https://www.bbc.co.uk/news/articles/ce8ml4q37veo" target="_blank">Sabrina Carpenter and Graham Norton spotted in NYC before rumoured Taylor Swift wedding celebrations</a>
+      <span class="minor-summary">
+        <span class="l-en">Celebrity spotting ahead of rumored Taylor Swift wedding celebrations in New York.</span>
+        <span class="l-hu">Hírességek tűntek fel New Yorkban a híresztelni várt Taylor Swift esküvői ünneplés előtt.</span>
+        <span class="l-ru">Знаменитостей заметили в Нью-Йорке накануне предполагаемого свадебного торжества Тейлор Свифт.</span>
+      </span>
+    </div>
+    <div class="minor-item">
+      <a href="https://www.bbc.co.uk/news/articles/ce8j2e38zzgo" target="_blank">Labour failed to prepare for power, admits PM's former top aide</a>
+      <span class="minor-summary">
+        <span class="l-en">The former top aide of the PM admitted that Labour was unprepared for power — a damaging admission as Burnham prepares to take over.</span>
+        <span class="l-hu">A miniszterelnöki főtanácsadó beismerte, hogy a Munkáspárt nem készült fel a hatalomra — kínos beismerés Burnham átvétele előtt.</span>
+        <span class="l-ru">Бывший советник премьера признал, что лейбористы не были готовы к власти — болезненное признание накануне передачи власти Бернхэму.</span>
+      </span>
+    </div>
+  </div>
+
+  <div class="overview-block">
+    <div class="overview-label">Overview</div>
+    <p class="overview-text">
+      <span class="l-en">In other news, a survivor was pulled from rubble eight days after Venezuela earthquakes, while Catherine surprised Wimbledon visitors by giving out tickets. England's Sciver-Brunt led her team to the World Cup final.</span>
+      <span class="l-hu">Egyéb hírek szerint egy túlélőt nyolc nappal a venezuelai földrengés után emeltek ki a romokból. Az angol csapat Sciver-Brunt vezérletével a világbajnoki döntőbe jutott.</span>
+      <span class="l-ru">Выжившего вытащили из руин через восемь дней после землетрясения в Венесуэле. Английская женская сборная вышла в финал чемпионата мира.</span>
+    </p>
+  </div>
+</div>
+
+
+<!-- ═══════ MARKETS ═══════ -->
+<div id="markets" class="tab-panel">
+  <div class="dateline"><span class="dateline-text">Markets &amp; Economy</span></div>
+
+  <div class="rates-grid">
+    <div class="rate-cell">
+      <div class="rate-label">EUR / HUF</div>
+      <span class="rate-value">—</span>
+      <span class="rate-change" style="color:var(--muted)">Live data pending</span>
+    </div>
+    <div class="rate-cell">
+      <div class="rate-label">USD / HUF</div>
+      <span class="rate-value">—</span>
+      <span class="rate-change" style="color:var(--muted)">Live data pending</span>
+    </div>
+    <div class="rate-cell">
+      <div class="rate-label">BTC / USD</div>
+      <span class="rate-value">~$57K</span>
+      <span class="rate-change up">▲ Bounce from 21-mo low</span>
+    </div>
+  </div>
+  <div class="rate-note">Rate feed integration pending · BTC price from articles.json · July 3, 2026</div>
+
+  <article class="featured-article">
+    <div class="article-source">cryptobriefing.com</div>
+    <h2 class="article-headline"><a href="https://cryptobriefing.com/strategy-strc-strive-sata-bitcoin-preferred-stock/" target="_blank">Strategy's STRC stabilizes near $85, SATA trades at $97.9 amid Bitcoin pressure</a></h2>
+    <p class="article-summary">
+      <span class="l-en">The cryptocurrency STRC has stabilized near $85, while SATA trades at $97.9 despite Bitcoin's volatility. This stability highlights the complexities and risks associated with cryptocurrency-backed financial instruments.</span>
+      <span class="l-hu">A STRC 85 közelében stabilizálódott, míg a SATA 97,9 dolláron kereskedik a bitcoin volatilitása ellenére.</span>
+      <span class="l-ru">STRC стабилизировался около $85, SATA торгуется по $97,9 на фоне волатильности биткоина.</span>
+    </p>
+    <div class="article-expanded" id="exp-mk1">
+      <span class="l-en">The stabilization of Strategy's STRC near $85 and SATA at $97.9 comes amid Bitcoin's volatility, highlighting the challenges of cryptocurrency-backed financial instruments. This development underscores the broader market pressures and the risks associated with such assets. The stabilization may signal a temporary reprieve, but it does not eliminate the underlying risks in a market where Bitcoin has just bounced from a 21-month low.</span>
+      <span class="l-hu">A STRC és SATA stabilizálódása a Bitcoin volatilitása közepette a kriptovalutára alapozott pénzügyi eszközök kockázatait hangsúlyozza. A stabilizáció átmeneti könnyebbülés lehet, de nem csökkenti az alapvető kockázatokat.</span>
+      <span class="l-ru">Стабилизация STRC и SATA на фоне волатильности биткоина подчёркивает риски, связанные с криптовалютными финансовыми инструментами. Это может быть временной передышкой.</span>
+    </div>
+    <button class="expand-btn" onclick="toggleExpand('exp-mk1', this)">▸ Read more</button><a class="source-link" href="https://cryptobriefing.com/strategy-strc-strive-sata-bitcoin-preferred-stock/" target="_blank">→ CryptoBriefing</a>
+  </article>
+
+  <article class="featured-article">
+    <div class="article-source">newsapi.org · github.com</div>
+    <h2 class="article-headline"><a href="https://github.com/tamasPetki/HeadlessTracker" target="_blank">HeadlessTracker — MCP server that gives AI eyes on your crypto portfolio</a></h2>
+    <p class="article-summary">
+      <span class="l-en">HeadlessTracker is an MCP server for tracking crypto portfolios without a dashboard UI. AI hosts render on demand, supporting platforms like Bybit, Binance, MetaMask, Solana, and Polymarket.</span>
+      <span class="l-hu">A HeadlessTracker egy MCP-kiszolgáló kriptóportfóliók nyomon követésére, megjelenítő felület nélkül. Támogatja a Bybit, Binance, MetaMask, Solana és Polymarket platformokat.</span>
+      <span class="l-ru">HeadlessTracker — MCP-сервер для отслеживания криптопортфелей без интерфейса. Поддерживает Bybit, Binance, MetaMask, Solana и Polymarket.</span>
+    </p>
+    <div class="article-expanded" id="exp-mk2">
+      <span class="l-en">HeadlessTracker is a new MCP server designed for tracking cryptocurrency portfolios without a traditional dashboard interface. The tool leverages AI to render visuals on demand, offering users real-time insights into their crypto holdings. It supports major platforms such as Bybit, Binance, MetaMask, Solana, and Polymarket. This innovation reflects a growing trend toward AI-driven financial tools in the crypto space.</span>
+      <span class="l-hu">A HeadlessTracker valós idejű adatokat nyújt a kriptovalutákról mesterséges intelligencia segítségével. Az AI alapú pénzügyi eszközök növekvő trendjét tükrözi a kriptovaluta területén.</span>
+      <span class="l-ru">HeadlessTracker использует ИИ для визуализации данных о криптоактивах в реальном времени. Отражает растущий тренд ИИ-инструментов в криптовалютной сфере.</span>
+    </div>
+    <button class="expand-btn" onclick="toggleExpand('exp-mk2', this)">▸ Read more</button><a class="source-link" href="https://github.com/tamasPetki/HeadlessTracker" target="_blank">→ GitHub</a>
+  </article>
+
+  <div class="minor-block">
+    <div class="minor-block-label">Also in Markets</div>
+    <div class="minor-item">
+      <a href="https://cointelegraph.com/markets/bitcoin-bounces-off-21-month-low-but-leverage-data-signals-caution-was-57k-the-bottom" target="_blank">Bitcoin bounces off 21-month low — was $57K the bottom?</a>
+      <span class="minor-summary">
+        <span class="l-en">Bitcoin rebounded from a 21-month low, but leverage data raised concerns about whether $57K was the bottom.</span>
+        <span class="l-hu">A bitcoin visszapattant egy 21 hónapos mélypontról, de a tőkeáttételi adatok aggályokat keltetek.</span>
+        <span class="l-ru">Биткоин отскочил от 21-месячного минимума, но данные по плечу вызвали сомнения.</span>
+      </span>
+    </div>
+    <div class="minor-item">
+      <a href="https://cryptobriefing.com/empery-digital-bitcoin-ai-data-center/" target="_blank">Empery Digital considers selling Bitcoin to fund $65M AI data center</a>
+      <span class="minor-summary">
+        <span class="l-en">Empery Digital is considering selling Bitcoin to fund a $65M AI data center project — an unusual pivot from crypto holding to AI infrastructure.</span>
+        <span class="l-hu">Az Empery Digital megfontolja a Bitcoin eladását egy 65 millió dolláros AI adatközponti projekt finanszírozására.</span>
+        <span class="l-ru">Empery Digital рассматривает продажу биткоинов для финансирования AI-дата-центра за $65M.</span>
+      </span>
+    </div>
+    <div class="minor-item">
+      <a href="https://cryptobriefing.com/bitcoin-standard-treasury-adam-back-conservative-returns/" target="_blank">Bitcoin Standard Treasury aims for conservative Bitcoin returns — Adam Back</a>
+      <span class="minor-summary">
+        <span class="l-en">Bitcoin Standard Treasury targets conservative returns, signaling a maturing approach to institutional Bitcoin holdings.</span>
+        <span class="l-hu">A Bitcoin Standard Treasury konzervatív hozamokat céloz — az intézményes Bitcoin-tartás érettebb megközelítése felé.</span>
+        <span class="l-ru">Bitcoin Standard Treasury нацелен на консервативную доходность — признак зрелого институционального подхода.</span>
+      </span>
+    </div>
+  </div>
+
+  <div class="overview-block">
+    <div class="overview-label">Overview</div>
+    <p class="overview-text">
+      <span class="l-en">Bitcoin faces continued pressure as it tests key levels amid bear market conditions and record outflows from ETFs. New financial products are gaining attention, including a review of Xapo Bank and discussions around the Vanguard VEU ETF. The cryptocurrency market remains volatile as investors weigh macroeconomic factors.</span>
+      <span class="l-hu">A Bitcoin továbbra is nyomás alatt áll a medvepiac körülményei és az ETF-ek rekordkifolyása közepette. A befektetők makrogazdasági tényezőket mérlegelnek.</span>
+      <span class="l-ru">Биткоин продолжает испытывать давление в условиях медвежьего рынка и рекордных оттоков из ETF. Инвесторы взвешивают макроэкономические факторы.</span>
+    </p>
+  </div>
+</div>
+
+
+<!-- ═══════ SPACE ═══════ -->
+<div id="space" class="tab-panel">
+  <div class="dateline"><span class="dateline-text">Space &amp; Science</span></div>
+
+  <article class="featured-article">
+    <div class="article-source">nasa.gov</div>
+    <h2 class="article-headline"><a href="https://www.nasa.gov/general/nasas-artemis-ii-breaks-agency-streaming-record/" target="_blank">NASA's Artemis II Breaks Agency Streaming Record — 149.4 Million Views</a></h2>
+    <img class="article-img" src="https://www.nasa.gov/wp-content/uploads/2026/04/55193772552-b8cfb47b7e-o.jpg" alt="The Artemis II crew share a group hug inside the Orion spacecraft near the Moon, April 7, 2026">
+    <p class="article-summary">
+      <span class="l-en">NASA's Artemis II mission set a new streaming record with over 149.4 million views on NASA-owned platforms. The live coverage of the launch, lunar flyby, and splashdown attracted strong global engagement throughout the mission.</span>
+      <span class="l-hu">A NASA Artemis II misszió új streaming-rekordot állított fel, több mint 149,4 millió nézéssel a NASA saját platformjain. A rakétaindítás, holdkörút és vízbe csapódás élő közvetítése nagy globális érdeklődést váltott ki.</span>
+      <span class="l-ru">Миссия NASA «Артемида II» установила рекорд стриминга — более 149,4 млн просмотров на платформах NASA.</span>
+    </p>
+    <div class="article-expanded" id="exp-sp1">
+      <span class="l-en">NASA's Artemis II mission set a new streaming record, with over 149.4 million views across NASA-owned platforms. The live coverage attracted global attention, showcasing sustained public engagement throughout the mission. The 24/7 streams of the Orion spacecraft highlighted NASA's ability to deliver real-time updates to a worldwide audience. This unprecedented viewership underscores the significance of Artemis II as a milestone in lunar exploration. And yet: almost nobody led their news broadcast with it. That inversion of attention — humanity watching astronauts loop the Moon in real time while the algorithm-driven media machine chased other stories — is worth sitting with.</span>
+      <span class="l-hu">A NASA Artemis II misszió 149,4 millió nézéssel új rekordot döntött. Az Orion űrhajó 24/7-es közvetítése megmutatta a NASA képességét a valós idejű globális tájékoztatásra. Mégis: szinte senki nem ezzel vezette a híreket. Az a figyelmi inverzió — az emberiség valós időben nézi az asztronautákat a Hold körül, miközben az algoritmusvezérelt média más történeteket hajszolja — önmagában is figyelmet érdemel.</span>
+      <span class="l-ru">Миссия «Артемида II» набрала 149,4 млн просмотров. Трансляция Orion в режиме 24/7 подчеркнула способность NASA охватить мировую аудиторию. И всё же почти никто не поставил это главной новостью. Эта инверсия внимания — человечество наблюдает за астронавтами у Луны в реальном времени, пока медиа гоняется за другими историями — говорит о многом.</span>
+    </div>
+    <button class="expand-btn" onclick="toggleExpand('exp-sp1', this)">▸ Read more</button><a class="source-link" href="https://www.nasa.gov/general/nasas-artemis-ii-breaks-agency-streaming-record/" target="_blank">→ NASA</a>
+  </article>
+
+  <article class="featured-article">
+    <div class="article-source">nasa.gov</div>
+    <h2 class="article-headline"><a href="https://www.nasa.gov/image-article/good-morning-earth/" target="_blank">Good Morning, Earth! — ISS orbital sunrise captured by NASA astronaut Chris Williams</a></h2>
+    <p class="article-summary">
+      <span class="l-en">NASA astronaut Chris Williams captured an orbital sunrise from the International Space Station on June 26, 2026. The space station completes 16 orbits of Earth in 24 hours, experiencing 16 sunrises and sunsets.</span>
+      <span class="l-hu">A NASA űrhajósa, Chris Williams fényképezte egy orbitális napkeletet az Egyesült Államok Űrállomásáról 2026. június 26-án. Az állomás 24 óra alatt 16 körutat tesz és 16 napkeletet lát.</span>
+      <span class="l-ru">Астронавт NASA Крис Уильямс сфотографировал орбитальный рассвет с МКС 26 июня 2026 года. Станция делает 16 орбит за 24 часа.</span>
+    </p>
+    <div class="article-expanded" id="exp-sp2">
+      <span class="l-en">NASA astronaut Chris Williams captured an orbital sunrise from the International Space Station on June 26, 2026, highlighting the station's rapid movement around Earth. The space station completes 16 orbits in 24 hours, experiencing 16 sunrises and sunsets daily. This image showcases the beauty and dynamics of space travel from a unique perspective. The International Space Station serves as a vital research laboratory for scientific experiments in microgravity. The photo emphasizes the importance of human presence in space for ongoing scientific discovery.</span>
+      <span class="l-hu">Chris Williams NASA-asztronauta egy orbitális napkeletet fényképezett az Nemzetközi Űrállomásról. Az állomás 24 óra alatt 16 körutat tesz, 16 napkeletet és naplementét tapasztalva. A kép megmutatja az űrutazás szépségét egyedi perspektívából.</span>
+      <span class="l-ru">Астронавт Крис Уильямс сфотографировал рассвет с МКС, демонстрируя красоту космических путешествий с уникальной точки зрения. МКС — важная научная лаборатория для экспериментов в условиях микрогравитации.</span>
+    </div>
+    <button class="expand-btn" onclick="toggleExpand('exp-sp2', this)">▸ Read more</button><a class="source-link" href="https://www.nasa.gov/image-article/good-morning-earth/" target="_blank">→ NASA</a>
+  </article>
+
+  <div class="minor-block">
+    <div class="minor-block-label">Also in Space &amp; Science</div>
+    <div class="minor-item">
+      <a href="https://science.nasa.gov/missions/webb/nasas-webb-reveals-stars-sparking-to-life-in-cosmic-celebration/" target="_blank">NASA's Webb Reveals Stars Sparking to Life in Cosmic Celebration</a>
+      <span class="minor-summary">
+        <span class="l-en">NASA's Webb telescope has captured images of stars forming in a cosmic event — new window into stellar birth.</span>
+        <span class="l-hu">A NASA Webb teleszkópja felvett képeket a csillagok kialakulásáról — új ablak a csillagkeletkezésre.</span>
+        <span class="l-ru">Телескоп Webb запечатлел рождение звёзд — новое окно в процесс звёздообразования.</span>
+      </span>
+    </div>
+    <div class="minor-item">
+      <a href="https://science.nasa.gov/solar-system/whats-up-july-2026-skywatching-tips-from-nasa/" target="_blank">What's Up: July 2026 Skywatching Tips from NASA</a>
+      <span class="minor-summary">
+        <span class="l-en">NASA provides skywatching tips for observing celestial events in July 2026 — including planetary conjunctions and meteor showers.</span>
+        <span class="l-hu">A NASA csillagászati tippeket ad július 2026-ra — beleértve bolygó-konjunkciókat és meteorrajokat.</span>
+        <span class="l-ru">NASA даёт советы по наблюдению за небом в июле 2026 — включая соединения планет и метеоритные потоки.</span>
+      </span>
+    </div>
+    <div class="minor-item">
+      <a href="https://science.nasa.gov/missions/chandra/nasas-chandra-examines-milky-way-at-arms-length/" target="_blank">NASA's Chandra Examines Milky Way at Arms' Length</a>
+      <span class="minor-summary">
+        <span class="l-en">NASA's Chandra X-ray Observatory has captured a detailed view of the Milky Way — revealing high-energy structures invisible to optical telescopes.</span>
+        <span class="l-hu">A NASA Chandra röntgenteleszkópja részletes képet készített a Tejútrendszerről — optikai teleszkópokkal láthatatlan energetikus struktúrákat tárva fel.</span>
+        <span class="l-ru">Рентгеновская обсерватория Chandra сняла детальный вид Млечного Пути — обнаружив высокоэнергетические структуры, невидимые оптическим телескопам.</span>
+      </span>
+    </div>
+  </div>
+
+  <div class="overview-block">
+    <div class="overview-label">Overview</div>
+    <p class="overview-text">
+      <span class="l-en">NASA is recruiting volunteers for a yearlong simulated mission to the Moon and Mars. The LINK spacecraft is set to assist NASA's Swift Observatory. NASA's James Webb Space Telescope is investigating how a planet survived its star's demise.</span>
+      <span class="l-hu">A NASA önkénteseket toboroz egy éves szimulált Hold- és Mars-küldetésre. A LINK úrhajó segítséget nyújt a NASA Swift-megfigyelőnek. A James Webb Űrtávcső vizsgálja, hogyan élt túl egy bolygó csillagának halálát.</span>
+      <span class="l-ru">NASA набирает волонтёров для годовой симуляции миссии на Луну и Марс. Аппарат LINK поможет обсерватории Swift. Webb исследует, как планета пережила гибель своей звезды.</span>
+    </p>
+  </div>
+</div>
+
+</main>
+
+<script>
+  const TABS = ['summary','hot-topics','magyar','eu','world','markets','space'];
+
+  function showTab(id, btn) {
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    if (btn) btn.classList.add('active');
+    else {
+      const idx = TABS.indexOf(id);
+      document.querySelectorAll('.tab-btn')[idx].classList.add('active');
+    }
+    document.querySelectorAll('.tab-btn')[TABS.indexOf(id)].scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+
+  function showTabById(id) { showTab(id); }
+
+  function toggleExpand(id, btn) {
+    const el = document.getElementById(id);
+    const open = el.style.display === 'block';
+    el.style.display = open ? 'none' : 'block';
+    const lang = document.body.className.replace('lang-','');
+    const labels = {mix:'Read more', en:'Read more', hu:'Tovább', ru:'Далее'};
+    const closeLabels = {mix:'Show less', en:'Show less', hu:'Kevesebbet', ru:'Свернуть'};
+    btn.textContent = open ? ('▸ ' + labels[lang]) : ('▴ ' + closeLabels[lang]);
+  }
+
+  function toggleThread(el) {
+    const detail = el.querySelector('.thread-detail');
+    detail.style.display = detail.style.display === 'block' ? 'none' : 'block';
+  }
+
+  function setLang(lang, btn) {
+    document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+    document.body.className = 'lang-' + lang;
+  }
+</script>
+</body>
+</html>
