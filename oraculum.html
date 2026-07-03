@@ -132,6 +132,41 @@
     body.lang-mix #magyar .lb-en { display: none; }
     body.lang-mix #magyar .lb-hu { display: block; }
 
+
+    /* ABOUT TAB */
+    .about-manifesto { font-size: 19px; line-height: 1.9; margin-bottom: 40px; padding-bottom: 40px; border-bottom: 1px solid var(--dust); color: var(--ink); font-style: italic; }
+    .fc-intro { font-family: var(--font-mono); font-size: 12px; color: var(--muted); line-height: 1.7; margin-bottom: 32px; letter-spacing: 0.02em; }
+    .fc-wrap { max-width: 400px; margin: 0 auto; }
+    .fc-node { border: 1px solid var(--rule); background: var(--paper); padding: 13px 16px; margin-bottom: 0; }
+    .fc-node.script  { border-color: var(--ink); border-width: 1.5px; }
+    .fc-node.local   { border-color: #1A3F6F; border-width: 1.5px; background: #EBF0F8; }
+    .fc-node.cloud   { border-color: var(--accent); border-width: 1.5px; background: #FAEAEA; }
+    .fc-node.data    { border-color: var(--rule); background: var(--dust); }
+    .fc-node.output  { border-color: var(--ink); background: var(--ink); }
+    .fc-node.hosting { border-color: var(--ink); border-width: 1.5px; }
+    .fc-node.browser { border-color: var(--rule); background: var(--dust); border-style: dashed; }
+    .fc-node-label   { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.1em; color: var(--muted); text-transform: uppercase; margin-bottom: 5px; }
+    .fc-label-blue   { color: #1A3F6F; }
+    .fc-label-accent { color: var(--accent); }
+    .fc-label-output { color: var(--rule); }
+    .fc-node-title   { font-family: var(--font-display); font-size: 15px; font-weight: 700; color: var(--ink); }
+    .fc-title-blue   { color: #1A3F6F; }
+    .fc-title-accent { color: var(--accent); }
+    .fc-title-output { color: var(--paper); }
+    .fc-node-detail  { font-family: var(--font-mono); font-size: 10px; color: var(--muted); margin-top: 4px; line-height: 1.5; }
+    .fc-detail-blue  { color: #1A3F6F; }
+    .fc-detail-accent { color: var(--accent); }
+    .fc-arrow { text-align: center; color: var(--rule); font-size: 20px; line-height: 1; padding: 6px 0; }
+    .fc-arrow-accent { color: var(--accent); }
+    .fc-arrow-blue   { color: #1A3F6F; }
+    .fc-arrow-note   { font-family: var(--font-mono); font-size: 10px; color: var(--muted); line-height: 1.4; }
+    .fc-sources { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 10px; }
+    .fc-chip { font-family: var(--font-mono); font-size: 10px; padding: 3px 8px; border: 1px solid var(--rule); color: var(--ink); background: var(--paper); white-space: nowrap; }
+    .fc-data-group { display: flex; flex-direction: column; gap: 3px; }
+    .fc-legend { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 28px; padding-top: 20px; border-top: 1px solid var(--dust); }
+    .fc-legend-item { display: flex; align-items: center; gap: 7px; font-family: var(--font-mono); font-size: 10px; color: var(--muted); }
+    .fc-legend-dot { width: 12px; height: 12px; border-radius: 2px; flex-shrink: 0; }
+
     /* MOBILE */
     @media (max-width: 600px) {
       .site-header { padding: 0 14px; gap: 10px; }
@@ -174,6 +209,7 @@
   <button class="tab-btn" onclick="showTab('world', this)">World</button>
   <button class="tab-btn" onclick="showTab('markets', this)">Markets</button>
   <button class="tab-btn" onclick="showTab('space', this)">Space</button>
+  <button class="tab-btn" onclick="showTab('about', this)">About</button>
 </nav>
 
 <main class="content">
@@ -661,10 +697,155 @@
     <p class="overview-text"><span class="l-en">NASA is recruiting volunteers for a yearlong simulated mission to the Moon and Mars. Meanwhile, the LINK spacecraft is set to assist NASA’s Swift Observatory. Additionally, NASA’s James Webb Telescope is investigating how a planet survived its star’s demise.</span><span class="l-hu">A NASA érdeklődőket keres a hónapos szimulált hold- és mars-missionhez. Egyidejűleg a LINK űrszonda segítséget nyújtani fog a NASA Swift-figyelőnek. Ezenkívül a James Webb teleszkóp tanulmányozza, hogyan élt túl egy bolygó a csillagának halálát.</span><span class="l-ru">NASA ищет волонтеров для годового симулированного миссии на Луну и Марс. В то же время спутник LINK готов помочь телескопу NASA Swift. Кроме того, телескоп James Webb изучает, как планета выжила после смерти своей звезды.</span></p>
   </div>
 </div>
+
+<div id="about" class="tab-panel">
+
+  <div class="dateline"><span class="dateline-text">Manifesto</span></div>
+  <p class="about-manifesto">
+    Every publication follows a narrative, political, commercial, or algorithmic.
+    I built Oraculum because I wanted the news without the frame: sources I trust,
+    summarized without an editorial agenda, in the languages I think in.
+    Decades of reading taught me what matters to me and what does not, and because
+    I built this, I can finally have a digest that reflects that taste,
+    not someone else's agenda.
+  </p>
+
+  <div class="dateline"><span class="dateline-text">How It Works</span></div>
+  <p class="fc-intro">
+    Oraculum runs on a Mac Mini. News is fetched every hour from 12 sources,
+    summarized locally by Qwen3 8B in three languages, and assembled into a
+    single static HTML file pushed to GitHub Pages. Twice a day a journalist
+    agent powered by Claude API adds an editorial briefing. Total cloud cost: ~$1&#x2013;2/month.
+  </p>
+
+  
+<div class="fc-wrap">
+
+  <div class="fc-node">
+    <div class="fc-node-label">Data Sources</div>
+    <div class="fc-node-title">Main Sources</div>
+    <div class="fc-sources">
+      <span class="fc-chip">telex.hu</span>
+      <span class="fc-chip">444.hu</span>
+      <span class="fc-chip">hvg.hu</span>
+      <span class="fc-chip">BBC</span>
+      <span class="fc-chip">Reuters</span>
+      <span class="fc-chip">Deutsche Welle</span>
+      <span class="fc-chip">Politico EU</span>
+      <span class="fc-chip">Washington Post</span>
+      <span class="fc-chip">NASA</span>
+      <span class="fc-chip">SpaceJunkie</span>
+      <span class="fc-chip">NYT API</span>
+      <span class="fc-chip">NewsAPI.org</span>
+    </div>
+  </div>
+
+  <div class="fc-arrow">&#x2193;</div>
+
+  <div class="fc-node script">
+    <div class="fc-node-label">Script &middot; every hour</div>
+    <div class="fc-node-title">fetch_news.py</div>
+  </div>
+
+  <div class="fc-arrow fc-arrow-blue">&#x2193;</div>
+
+  <div class="fc-node local">
+    <div class="fc-node-label fc-label-blue">Local model &middot; Mac Mini</div>
+    <div class="fc-node-title fc-title-blue">Qwen3 8B</div>
+    <div class="fc-node-detail fc-detail-blue">Summarizes in EN &middot; HU &middot; RU</div>
+  </div>
+
+  <div class="fc-arrow">&#x2193;</div>
+
+  <div class="fc-node data">
+    <div class="fc-node-label">Data &middot; 6 sections</div>
+    <div class="fc-node-title">articles.json</div>
+    <div class="fc-node-detail">featured &middot; minor &middot; overview &times; EN/HU/RU</div>
+  </div>
+
+  <div class="fc-arrow">
+    &#x2193;
+    <div class="fc-arrow-note">2&times; daily &middot; 07:00 &middot; 15:00</div>
+  </div>
+
+  <div class="fc-node script">
+    <div class="fc-node-label">Script &middot; twice daily</div>
+    <div class="fc-node-title">journalist_agent.py</div>
+  </div>
+
+  <div class="fc-arrow fc-arrow-accent">&#x2193;</div>
+
+  <div class="fc-node cloud">
+    <div class="fc-node-label fc-label-accent">Cloud &middot; ~$1&ndash;2/month</div>
+    <div class="fc-node-title fc-title-accent">Claude API</div>
+    <div class="fc-node-detail fc-detail-accent">300-char editorial briefing &middot; EN &middot; HU &middot; RU</div>
+  </div>
+
+  <div class="fc-arrow">&#x2193;</div>
+
+  <div class="fc-data-group">
+    <div class="fc-node data">
+      <div class="fc-node-label">Data</div>
+      <div class="fc-node-title">latest_briefing.json</div>
+    </div>
+    <div class="fc-node data">
+      <div class="fc-node-label">Data</div>
+      <div class="fc-node-title">threads.json</div>
+    </div>
+    <div class="fc-node data">
+      <div class="fc-node-label">Data &middot; 14 entries / 7 days</div>
+      <div class="fc-node-title">briefing_memory.json</div>
+    </div>
+  </div>
+
+  <div class="fc-arrow">&#x2193;</div>
+
+  <div class="fc-node script">
+    <div class="fc-node-label">Script &middot; pure Python</div>
+    <div class="fc-node-title">build_site.py</div>
+    <div class="fc-node-detail">reads all JSONs &middot; generates static HTML</div>
+  </div>
+
+  <div class="fc-arrow">&#x2193;</div>
+
+  <div class="fc-node output">
+    <div class="fc-node-label fc-label-output">Output</div>
+    <div class="fc-node-title fc-title-output">oraculum.html</div>
+  </div>
+
+  <div class="fc-arrow">
+    &#x2193;
+    <div class="fc-arrow-note">git push &middot; PAT</div>
+  </div>
+
+  <div class="fc-node hosting">
+    <div class="fc-node-label">Hosting</div>
+    <div class="fc-node-title">GitHub Pages</div>
+  </div>
+
+  <div class="fc-arrow">&#x2193;</div>
+
+  <div class="fc-node browser">
+    <div class="fc-node-label">Browser &middot; PC &middot; iPad &middot; Mobile</div>
+    <div class="fc-node-title">MIX &middot; EN &middot; HU &middot; RU</div>
+    <div class="fc-node-detail">7 tabs &middot; language switcher &middot; responsive</div>
+  </div>
+
+  <div class="fc-legend">
+    <div class="fc-legend-item"><div class="fc-legend-dot" style="background:#EBF0F8;border:1.5px solid #1A3F6F"></div>Local / Qwen3</div>
+    <div class="fc-legend-item"><div class="fc-legend-dot" style="background:#FAEAEA;border:1.5px solid #B5162B"></div>Cloud / Claude</div>
+    <div class="fc-legend-item"><div class="fc-legend-dot" style="background:#EAEBEC;border:1px solid #D0D0CD"></div>Data file</div>
+    <div class="fc-legend-item"><div class="fc-legend-dot" style="background:#F5F5F3;border:1.5px solid #1A1A1A"></div>Python script</div>
+  </div>
+
+</div>
+
+
+</div>
 </main>
 
 <script>
-  const TABS = ['summary','hot-topics','magyar','eu','world','markets','space'];
+  const TABS = ['summary','hot-topics','magyar','eu','world','markets','space','about'];
 
   function showTab(id, btn) {
     document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
