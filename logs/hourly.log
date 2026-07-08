@@ -1,0 +1,15 @@
+
+=== [2026-07-03 01:52:46] HOURLY RUN ===
+[2026-07-03 01:52:46] Running fetch_news.py...
+python: can't open file '/Users/asarpi/projects/Oraculum_repo/fetch_news.py': [Errno 2] No such file or directory
+[2026-07-03 01:52:46] ERROR: fetch_news.py failed. Aborting.
+
+=== [2026-07-03 01:53:19] HOURLY RUN ===
+[2026-07-03 01:53:19] Running fetch_news.py...
+python: can't open file '/Users/asarpi/projects/Oraculum_repo/fetch_news.py': [Errno 2] No such file or directory
+[2026-07-03 01:53:19] ERROR: fetch_news.py failed. Aborting.
+
+=== [2026-07-03 01:55:44] HOURLY RUN ===
+[2026-07-03 01:55:44] Running fetch_news.py...
+python: can't open file '/Users/asarpi/projects/Oraculum_repo/fetch_news.py': [Errno 2] No such file or directory
+[2026-07-03 01:55:44] ERROR: fetch_news.py failed. Aborting.
